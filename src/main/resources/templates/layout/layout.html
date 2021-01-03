@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="head">
+	<meta charset="UTF-8" />
+	<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+	
+	<!-- Estilos calendario -->	
+	<link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}">	
+					
+</head>
+<body>
+
+	<header th:fragment="header">
+	
+		<script>
+
+			//var url = "http://localhost:8080";
+			var url = '[[${@environment.getProperty('configuracion.urlProyecto')}]]';
+			
+			if (localStorage.getItem("token_envio_cartas") == null) {
+				window.location.href = url; 
+			}
+		
+			function cerrarSesion(event) {
+				event.preventDefault();
+				localStorage.removeItem("token_envio_cartas");
+				window.location.href = url; 
+			}
+		</script>
+	
+		<style>
+			/* Imagen de carga de datos */
+			#loading-spinner {
+				position: absolute;					top: 50%;						left: 50%;								margin-top: -50px;
+				margin-left: -50px;					border: 16px solid #f3f3f3; 	border-top: 16px solid #3498db; 		border-radius: 50%;
+				width: 120px;						height: 120px;					animation: spin 2s linear infinite;
+				z-index: 5000;
+			}
+			@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }		
+		</style>
+		
+		<div style="display: none" id="loading-spinner"></div> <!-- Imagen de carga de datos -->
+
+	     <!-- Menú de Navegación -->
+	
+	    <nav id="menu-navegacion" class="navbar navbar-inverse" role="navigation">  <!-- class="navbar navbar-inverse navbar-fixed-top" -->
+	        <div class="container">
+	        <!--===================================-->  
+			    <!--  Este Menu queda escondido y aparece solo cuando la pantalla es muy pequeña...son las Barritas -->
+			
+	            <div class="navbar-header">
+	                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+	                    <span class="sr-only">Toggle navigation</span>
+	                    <span class="icon-bar"></span>
+	                    <span class="icon-bar"></span>
+	                    <span class="icon-bar"></span>
+	                </button>
+	                <a class="navbar-brand" href="index.php"> App Envío Cartas </a>
+	            </div>
+		    <!--===================================-->		
+	            
+	            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	                <ul class="nav navbar-nav navbar-right">	
+	                
+	                	<li> <a th:href="@{/contactoPersona}"> Contactos </a> </li>  
+						<li> <a th:href="@{/envioMasivoCorreo}"> Envio correo </a> </li>  
+						<li> <a th:href="@{/maestroEnvioEmail}"> Configuración de email </a> </li>	
+						<li> <a th:href="@{/respaldoDatos}"> Respaldos </a> </li>	
+	                    <li> <a href="#" onclick="cerrarSesion(event)"> Cerrar Sesión </a> </li>
+
+	                    <!--                    
+	                    <li class="dropdown">
+	                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"> Opciones <b class="caret"></b></a>
+	                        <ul class="dropdown-menu">						
+	                            <li> <a href="cerrar_sesion"> Cerrar Sesion </a> </li> 
+	                        </ul>
+	                    </li>       
+	                    -->
+	                </ul>
+	            </div>
+	        </div>
+	    </nav>
+		
+		<!-- Fin Menú de Navegación -->
+
+	</header>
+
+	<div class="container"></div>
+<!-- 	<h1> ${__${DomainUrl} </h1> -->
+
+	<footer th:fragment="footer" class="container">
+		<hr />
+
+		<!-- <script src="https://cdn.tinymce.com/4/tinymce.min.js"></script> -->
+		<script th:src="@{/js/tinymce.min.js}"></script>
+		
+		<script th:src="@{/js/jquery.js}"></script>
+		<script th:src="@{/js/bootstrap.min.js}"></script>
+		<script th:src="@{/js/funcionesGenericas.js}"></script>
+		<script th:src="@{/js/buscadorPaginado.js}"></script>
+
+		<!-- Usar calendario -->
+		<script th:src="@{/js/jquery-ui.js}"></script>
+		<script th:src="@{/js/cargarDatePicker.js}"></script>
+	
+	</footer>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

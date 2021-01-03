@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8" />
+		<link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/flick/jquery-ui.min.css">  <!-- Estilos calendario -->						
+	</head>
+<body>
+
+<header th:replace="layout/layout :: header"></header>
+<div class="container theme-showcase" role="main">
+
+	<div> 
+		<button onclick="generarRespaldo()" class="btn btn-success"> Generar Respaldo </button> <br/> 
+	</div> 
+
+</div>
+<footer th:replace="layout/layout :: footer"></footer>
+
+<script>
+
+const generarRespaldo = async () => 
+{
+	var clave = prompt("Introduzca la clave", "");
+
+	if (clave != null) 
+	{
+		if (clave == "")  return alert("Falta la clave");
+		
+		mostrarLoadingSpinner(); 
+
+		await fetch(url + "/RespaldoDatos/" + clave, { 
+			method: "POST", 
+			headers: {"Authorization": "Bearer " + localStorage.getItem("token_envio_cartas")}
+		}) 
+		.then(response => 
+		{
+			if(response.ok) 
+			{
+				response.blob().then(datos => 
+				{
+					var url = window.URL.createObjectURL(datos);
+					var a = document.createElement('a');
+					a.href = url;
+					a.download = "respaldo.sql";
+					document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+					a.click();    
+					a.remove();  //afterwards we remove the element again     
+				});
+			} 
+			else {
+				throw new Error("No fue posible generar el archivo de respaldo");
+			}
+		})
+		.catch(error => {
+			alert(error);
+		})
+		.finally(c=> {
+			ocultarLoadingSpinner();
+		});
+		
+		/*
+		fetch(url + "/RespaldoDatos/" + clave, { 
+			method: "POST", 
+			headers: {"Authorization": bearerToken}
+		}) 
+		.then(async res => ({
+			nombreArchivo: "respaldo.sql",
+			blob: await res.blob()
+		}))
+		.then(datos => 
+		{
+			var url = window.URL.createObjectURL(datos.blob);
+			var a = document.createElement('a');
+			a.href = url;
+			a.download = datos.nombreArchivo;
+			document.body.appendChild(a); // we need to append the element to the dom -> otherwise it will not work in firefox
+			a.click();    
+			a.remove();  //afterwards we remove the element again        
+		})
+		.catch(error => {
+			alert("Se encontro un error al generar el respaldo");
+		})
+		.finally(c=> {
+			ocultarLoadingSpinner();
+		});
+		*/
+	}
+}
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
