@@ -1,5 +1,5 @@
 
-# Aplicación web diseñada para el envío de un mismo email a múltiples destinatarios 
+# Aplicación web diseñada para redactar y enviar un email a múltiples destinatarios 
 
 Permite que cada usuario que ha iniciado sesión pueda redactar y dar formato a un correo, seleccionando los destinatarios 
 correspondientes. Permite también cambiar los datos de la cuenta de correo electrónico utilizada y seleccionar una nueva. También
