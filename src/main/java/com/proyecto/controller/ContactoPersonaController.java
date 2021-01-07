@@ -49,19 +49,20 @@ public class ContactoPersonaController
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage()); 
 		} 
 	} 
-
+	
 	
 	@GetMapping 
-	public Object listar()  // url:    /ContactoPersona/ 
+	public ResponseEntity<Object> listar()  // url:    /ContactoPersona/ 
 	{ 
 		try { 
-			return servicio.listar(); 
+			return ResponseEntity.ok(servicio.listar()); 
 		} 
 		catch (Exception ex) { 
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage()); 
 		} 
 	} 
 
+	
 	private Map<String, Object> llenarInformacionDataTable(ContactoPersona contactoPersona, HttpServletRequest request) 
 	{ 
 		try { 
@@ -115,7 +116,7 @@ public class ContactoPersonaController
 
 
 	@PostMapping 
-	public ResponseEntity guardar(@RequestBody ContactoPersona contactoPersona, BindingResult result) 
+	public ResponseEntity<Object> guardar(@RequestBody ContactoPersona contactoPersona, BindingResult result) 
 	{ 
 		try { 
 			if (result.hasErrors()) throw new Exception(result.getAllErrors().stream().findFirst().get().getDefaultMessage());  
@@ -131,10 +132,10 @@ public class ContactoPersonaController
 
 
 	@GetMapping(path = {"/{id}"})  // url:    /ContactoPersona/1  
-	public Object editar(@PathVariable("id") int id) 
+	public ResponseEntity<Object> editar(@PathVariable("id") int id) 
 	{ 
 		try { 
-			return servicio.buscarPorId(id);  
+			return ResponseEntity.ok(servicio.buscarPorId(id));  
 		} 
 		catch (Exception ex) { 
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage()); 
@@ -143,12 +144,12 @@ public class ContactoPersonaController
 
 	@PutMapping 
 	@ResponseBody 
-	public ResponseEntity editar(@RequestBody ContactoPersona contactoPersona, BindingResult result) 
+	public ResponseEntity<String> editar(@RequestBody ContactoPersona contactoPersona, BindingResult result) 
 	{ 
 		try { 
 			if (result.hasErrors()) throw new Exception(result.getAllErrors().stream().findFirst().get().getDefaultMessage());  
 			servicio.actualizar(contactoPersona); 
-			return new ResponseEntity(HttpStatus.OK); 
+			return new ResponseEntity<String>(HttpStatus.OK); 
 		} 
 		catch(IllegalArgumentException ex) { 
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage()); 
@@ -160,11 +161,11 @@ public class ContactoPersonaController
 
 
 	@DeleteMapping(path = "/{id}") 
-	public Object borrar(@PathVariable("id") int id) 
+	public ResponseEntity<String> borrar(@PathVariable("id") int id) 
 	{ 
 		try { 
 			servicio.borrar(id); 
-			return new ResponseEntity(HttpStatus.OK); 
+			return new ResponseEntity<String>(HttpStatus.OK); 
 		} 
 		catch(Exception ex) 
 		{ 
@@ -175,7 +176,7 @@ public class ContactoPersonaController
 
 
 	@PostMapping(value = "/importarExcel") 
-	public ResponseEntity importarExcel(@RequestParam("archivo") MultipartFile archivo) 
+	public ResponseEntity<String> importarExcel(@RequestParam("archivo") MultipartFile archivo) 
 	{ 
 		try { 
 			List<String> letras = Arrays.asList("A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"); 
@@ -184,7 +185,9 @@ public class ContactoPersonaController
 			int contadorFila = 0;
 			//int contadorFila = 2;  // Esto es porque empieza a contar desde la fila 2 
 			
+			@SuppressWarnings("resource")
 			XSSFWorkbook workbook = new XSSFWorkbook(archivo.getInputStream());
+			
 			XSSFSheet worksheet = workbook.getSheetAt(0);
 
 			for(int i = 0; i < worksheet.getPhysicalNumberOfRows(); i++) 
@@ -220,8 +223,12 @@ public class ContactoPersonaController
 				listaContactoPersona.add(contactoPersona); 
 				contadorFila ++; 
 			} 
+			
+			workbook.close();
 
 			servicio.procesarDatosExcel(listaContactoPersona); 
+			
+			return new ResponseEntity<String>(HttpStatus.OK); 
 		} 
 		catch(IllegalArgumentException ex) 
 		{ 
@@ -231,8 +238,6 @@ public class ContactoPersonaController
 		{ 
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage()); 
 		} 
-
-		return new ResponseEntity<String>(HttpStatus.OK); 
 	} 
 
 } 

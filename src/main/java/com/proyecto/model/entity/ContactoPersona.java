@@ -38,12 +38,12 @@ public class ContactoPersona
 	@Column(name = "ha_respondido") 
 	private Boolean haRespondido; 
 
-	@JsonFormat(pattern = "dd-MM-yyyy")  // Formatear fecha al convertir a json 
+	@JsonFormat(pattern = "yyyy-MM-dd")  // Formatear fecha al convertir a json 
 	@JsonDeserialize(using = DeserializarFechas.class)
 	@Column(name = "ultima_fecha_respuesta") 
 	private Date ultimaFechaRespuesta; 
 
-	@JsonFormat(pattern = "dd-MM-yyyy")  // Formatear fecha al convertir a json 
+	@JsonFormat(pattern = "yyyy-MM-dd")  // Formatear fecha al convertir a json 
 	@JsonDeserialize(using = DeserializarFechas.class)
 	@Column(name = "ultima_fecha_envio_correo") 
 	private Date ultimaFechaEnvioCorreo; 

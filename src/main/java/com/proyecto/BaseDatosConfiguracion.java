@@ -26,6 +26,7 @@ public class BaseDatosConfiguracion
 	JpaVendorAdapter jpaVendorAdapter;
 	
 	
+	@SuppressWarnings("unchecked")
 	@Bean
 	public Jackson2ObjectMapperBuilder configureObjectMapper()  // Impedir error could not initialize proxy en jackson. Esto es cuando en una instancia, el atributo padre es null
 	{

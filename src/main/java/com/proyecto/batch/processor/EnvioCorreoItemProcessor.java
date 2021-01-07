@@ -34,7 +34,7 @@ public class EnvioCorreoItemProcessor implements ItemProcessor<EnvioCorreoDTO, E
 	public void actualizarUltimaFechaEnvioCorreo(int idContactoPersona)
 	{
 		try {
-			ContactoPersona contactoPersona = repositorio_ContactoPersona.findById(idContactoPersona);
+			ContactoPersona contactoPersona = repositorio_ContactoPersona.findById(idContactoPersona).orElse(null);
 			contactoPersona.setUltimaFechaEnvioCorreo(new Date());
 			repositorio_ContactoPersona.save(contactoPersona);			
 		} 

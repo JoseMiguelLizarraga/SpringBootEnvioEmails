@@ -121,7 +121,7 @@ public class EnvioMasivoCorreoServiceImpl implements IEnvioMasivoCorreoService
 	public EnvioMasivoCorreo buscarPorId(int id) 
 	{ 
 		try {
-			EnvioMasivoCorreo envioMasivoCorreo = repositorio.findById(id);
+			EnvioMasivoCorreo envioMasivoCorreo = repositorio.buscarPorId(id);
 			
 			List<EnvioCorreoContactoPersona> listaEnvioCorreoContactoPersona = repositorio_EnvioCorreoContactoPersona.findAllByEnvioMasivoCorreo(envioMasivoCorreo);
 			envioMasivoCorreo.setListaEnvioCorreoContactoPersona(listaEnvioCorreoContactoPersona); 

@@ -12,7 +12,7 @@ import com.proyecto.model.entity.ContactoPersona;
 
 public interface ContactoPersonaRepository extends CrudRepository<ContactoPersona, Integer> 
 {  
-	public ContactoPersona findById(@Param("id") int id);
+	//public ContactoPersona findById(@Param("id") int id);
 	
     boolean existsByEmail(String email);
     
@@ -25,10 +25,15 @@ public interface ContactoPersonaRepository extends CrudRepository<ContactoPerson
     
     //=================================================>>>>
 
-    @Query("select count(c.id) from ContactoPersona c where (:#{#email} is null or c.email like %:#{#email}%) and existe = :existe")
+    @Query("select count(c.id) from ContactoPersona c where (:email is null or c.email like %:email%) and existe = :existe")
 	long contarTotalRegistros_Select_2(@Param("email") String email, Boolean existe);
 	
-	@Query("select c from ContactoPersona c where (:#{#email} is null or c.email like %:#{#email}%) and existe = :existe")
+	@Query(
+		"select c from ContactoPersona c where (:email is null or c.email like %:email%) and existe = :existe " +
+		"order by " +
+			"c.ultimaFechaEnvioCorreo nulls first, " + 
+			"ultimaFechaEnvioCorreo asc"
+	)
 	List<ContactoPersona> llenarSelect_2(@Param("email") String email, Boolean existe,  Pageable pageable);
 
 	//=================================================>>>>

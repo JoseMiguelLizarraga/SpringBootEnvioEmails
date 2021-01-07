@@ -23,6 +23,7 @@ public class RespaldoDatosServiceImpl implements IRespaldoDatosService
 	@Autowired private SessionFactory sessionFactory; 
 
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public String generarCodigoSQL_Insertar() throws Exception 
 	{ 
@@ -36,6 +37,7 @@ public class RespaldoDatosServiceImpl implements IRespaldoDatosService
 			List<ParametrosLogin> listaParametrosLogin = sesion.createQuery( 
 				"select c from ParametrosLogin c " 
 			).list(); 
+			
 			for (ParametrosLogin c : listaParametrosLogin) 
 			{ 
 				cadena.append("INSERT INTO parametros_login(" + 
@@ -57,9 +59,11 @@ public class RespaldoDatosServiceImpl implements IRespaldoDatosService
 			} 
 			//================================================>>>>>> 
 			cadena.append("\n\n-- Usuario \n"); 
+			
 			List<Usuario> listaUsuario = sesion.createQuery( 
 				"select c from Usuario c " 
 			).list(); 
+			
 			for (Usuario c : listaUsuario) 
 			{ 
 				cadena.append("INSERT INTO usuario(" + 
@@ -91,9 +95,11 @@ public class RespaldoDatosServiceImpl implements IRespaldoDatosService
 			} 
 			//================================================>>>>>> 
 			cadena.append("\n\n-- Cargo \n"); 
+			
 			List<Cargo> listaCargo = sesion.createQuery( 
 				"select c from Cargo c " 
 			).list(); 
+			
 			for (Cargo c : listaCargo) 
 			{ 
 				cadena.append("INSERT INTO cargo(" + 
@@ -113,11 +119,13 @@ public class RespaldoDatosServiceImpl implements IRespaldoDatosService
 			} 
 			//================================================>>>>>> 
 			cadena.append("\n\n-- UsuarioCargo \n"); 
+			
 			List<UsuarioCargo> listaUsuarioCargo = sesion.createQuery( 
 				"select c from UsuarioCargo c " 
 				+ "join fetch c.usuario "   // Obtiene informacion de la entidad padre Usuario 
 				+ "join fetch c.cargo "   // Obtiene informacion de la entidad padre Cargo 
 			).list(); 
+			
 			for (UsuarioCargo c : listaUsuarioCargo) 
 			{ 
 				cadena.append("INSERT INTO usuario_cargo(" + 
@@ -133,9 +141,11 @@ public class RespaldoDatosServiceImpl implements IRespaldoDatosService
 			} 
 			//================================================>>>>>> 
 			cadena.append("\n\n-- ContactoPersona \n"); 
+			
 			List<ContactoPersona> listaContactoPersona = sesion.createQuery( 
 				"select c from ContactoPersona c " 
 			).list(); 
+			
 			for (ContactoPersona c : listaContactoPersona) 
 			{ 
 				cadena.append("INSERT INTO contacto_persona(" + 
@@ -159,10 +169,12 @@ public class RespaldoDatosServiceImpl implements IRespaldoDatosService
 			} 
 			//================================================>>>>>> 
 			cadena.append("\n\n-- EnvioMasivoCorreo \n"); 
+			
 			List<EnvioMasivoCorreo> listaEnvioMasivoCorreo = sesion.createQuery( 
 				"select c from EnvioMasivoCorreo c " 
 				+ "join fetch c.usuario "   // Obtiene informacion de la entidad padre Usuario 
 			).list(); 
+			
 			for (EnvioMasivoCorreo c : listaEnvioMasivoCorreo) 
 			{ 
 				cadena.append("INSERT INTO envio_masivo_correo(" + 
@@ -189,11 +201,13 @@ public class RespaldoDatosServiceImpl implements IRespaldoDatosService
 			} 
 			//================================================>>>>>> 
 			cadena.append("\n\n-- EnvioCorreoContactoPersona \n"); 
+			
 			List<EnvioCorreoContactoPersona> listaEnvioCorreoContactoPersona = sesion.createQuery( 
 				"select c from EnvioCorreoContactoPersona c " 
 				+ "join fetch c.contactoPersona "   // Obtiene informacion de la entidad padre ContactoPersona 
 				+ "join fetch c.envioMasivoCorreo "   // Obtiene informacion de la entidad padre EnvioMasivoCorreo 
 			).list(); 
+			
 			for (EnvioCorreoContactoPersona c : listaEnvioCorreoContactoPersona) 
 			{ 
 				cadena.append("INSERT INTO envio_correo_contacto_persona(" + 
@@ -211,9 +225,11 @@ public class RespaldoDatosServiceImpl implements IRespaldoDatosService
 			} 
 			//================================================>>>>>> 
 			cadena.append("\n\n-- MaestroEnvioEmail \n"); 
+			
 			List<MaestroEnvioEmail> listaMaestroEnvioEmail = sesion.createQuery( 
 				"select c from MaestroEnvioEmail c " 
 			).list(); 
+			
 			for (MaestroEnvioEmail c : listaMaestroEnvioEmail) 
 			{ 
 				cadena.append("INSERT INTO maestro_envio_email(" + 

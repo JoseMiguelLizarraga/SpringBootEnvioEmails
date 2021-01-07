@@ -19,10 +19,10 @@ public class UsuarioController
 	@Autowired private IUsuarioService servicio; 
 
 	@RequestMapping(value = "/llenarSelect2") 
-	public @ResponseBody Object llenarSelect2(String atributoBuscado, String busqueda, int registrosPorPagina, int numeroPagina) 
+	public @ResponseBody ResponseEntity<Object> llenarSelect2(String atributoBuscado, String busqueda, int registrosPorPagina, int numeroPagina) 
 	{ 
 		try { 
-			return servicio.llenarSelect2(atributoBuscado, busqueda, registrosPorPagina, numeroPagina); 
+			return ResponseEntity.ok(servicio.llenarSelect2(atributoBuscado, busqueda, registrosPorPagina, numeroPagina)); 
 		} 
 		catch(IllegalArgumentException ex) { 
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage()); 
@@ -31,7 +31,6 @@ public class UsuarioController
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage()); 
 		} 
 	} 
-
 
 } 
 

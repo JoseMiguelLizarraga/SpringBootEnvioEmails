@@ -48,7 +48,7 @@ public class LoginController
 			{
 				// Si los datos enviados por el usuario estan con un contentType de tipo   application/json    de tipo raw (en bruto). Ejemplo:   {"username": "andres", "password": 12345}  
 				
-				Usuario usuario = usuario = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);  // Aca es a la inversa. Se convierte un json a un objeto
+				Usuario usuario = new ObjectMapper().readValue(request.getInputStream(), Usuario.class);  // Aca es a la inversa. Se convierte un json a un objeto
 					
 				username = usuario.getUsername();    // Tendra un valor en caso de que el formato de envio sea   request InputStream (raw)
 				password = usuario.getPassword();    // Tendra un valor en caso de que el formato de envio sea   request InputStream (raw)

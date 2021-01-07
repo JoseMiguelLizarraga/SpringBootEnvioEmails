@@ -26,10 +26,10 @@ public class MaestroEnvioEmailController
 	
 
 	@GetMapping 
-	public Object listar()  // url:    /MaestroEnvioEmail/ 
+	public ResponseEntity<Object> listar()  // url:    /MaestroEnvioEmail/ 
 	{ 
 		try { 
-			return servicio.listar(); 
+			return ResponseEntity.ok(servicio.listar()); 
 		} 
 		catch (Exception ex) { 
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage()); 
@@ -37,10 +37,10 @@ public class MaestroEnvioEmailController
 	} 
 
 	@GetMapping(path = {"/{id}"})  // url:    /MaestroEnvioEmail/1  
-	public Object editar(@PathVariable("id") int id) 
+	public ResponseEntity<Object> editar(@PathVariable("id") int id) 
 	{ 
 		try { 
-			return servicio.buscarPorId(id);  
+			return ResponseEntity.ok(servicio.buscarPorId(id));  
 		} 
 		catch (Exception ex) { 
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage()); 

@@ -2,19 +2,23 @@ package com.proyecto.model.repository;
 
 import java.util.Date;
 import java.util.List;
-
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-
 import com.proyecto.model.entity.EnvioMasivoCorreo;
-import com.proyecto.model.entity.Usuario;
-
-import org.springframework.data.domain.Pageable;
 
 
 public interface EnvioMasivoCorreoRepository extends CrudRepository<EnvioMasivoCorreo, Integer>
 {
+	
+	@Query(
+		"select c from EnvioMasivoCorreo c " + 
+		"join fetch c.usuario " +   // Obtiene informacion de la entidad padre Usuario 
+		"where c.id = :id"
+	)
+	public EnvioMasivoCorreo buscarPorId(@Param("id") int id);
+	
 	
 	@Query( 
 		"select new EnvioMasivoCorreo("  // Utiliza el constructor de la entidad EnvioMasivoCorreo con todos los argumentos
@@ -33,27 +37,17 @@ public interface EnvioMasivoCorreoRepository extends CrudRepository<EnvioMasivoC
 	public List<EnvioMasivoCorreo> findAll();
 	
 	//================================================================>>>>>
-	//public String findContenidoCorreoById(int id);  
-	//public List<EnvioMasivoCorreo> findAll();
-	
-	// (cast(:fromDate as date) is null )
 	
 	public String consultaTablaBusquedas = "where "
-		+ "(:#{#asuntoCorreo} is null or c.asuntoCorreo like %:#{#asuntoCorreo}%) and "
-		+ "(:#{#emailOrigenEnvio} is null or c.emailOrigenEnvio like %:#{#emailOrigenEnvio}%) and "
-		+ "(:#{#idUsuario} = 0 or c.usuario.id = :#{#idUsuario}) and "
-		+ "(:#{#descripcion} is null or c.descripcion like %:#{#descripcion}%) and "
-		+ "(:#{#estado} is null or c.estado like %:#{#estado}%) and "
-		
+		+ "(:asuntoCorreo is null or c.asuntoCorreo like %:asuntoCorreo%) and "
+		+ "(:emailOrigenEnvio is null or c.emailOrigenEnvio like %:emailOrigenEnvio%) and "
+		+ "(:idUsuario = 0 or c.usuario.id = :idUsuario) and "
+		+ "(:descripcion is null or c.descripcion like %:descripcion%) and "
+		+ "(:estado is null or c.estado like %:estado%) and "		
 		// + "c.fechaEnvio >= coalesce(:fechaEnvioDesde, c.fechaEnvio) and "                      // FUNCIONA SOLO EN MYSQL
-		+ "(cast(:fechaEnvioDesde as date) is null or c.fechaEnvio >= :fechaEnvioDesde) and "     // FUNCIONA
-		//+ "(:#{#fechaEnvioDesde} is null or c.fechaEnvio >= :#{#fechaEnvioDesde}) and "
-		
-		
-		//+ "(:#{#fechaEnvioHasta} is null or c.fechaEnvio <= :#{#fechaEnvioHasta})";
-		+ "(cast(:fechaEnvioHasta as date) is null or c.fechaEnvio <= :fechaEnvioHasta) ";     // FUNCIONA
- 	
-	
+		+ "(cast(:fechaEnvioDesde as date) is null or c.fechaEnvio >= :fechaEnvioDesde) and "     
+		+ "(cast(:fechaEnvioHasta as date) is null or c.fechaEnvio <= :fechaEnvioHasta) ";     
+ 		
 	@Query("select count(c.id) from EnvioMasivoCorreo c " + consultaTablaBusquedas)
 	long contarTotalRegistrosDataTable(
 		@Param("asuntoCorreo") String asuntoCorreo,
@@ -93,14 +87,8 @@ public interface EnvioMasivoCorreoRepository extends CrudRepository<EnvioMasivoC
 		Pageable pageable
 	);
 	
-	@Query(
-		"select c from EnvioMasivoCorreo c " + 
-		"join fetch c.usuario " +   // Obtiene informacion de la entidad padre Usuario 
-		"where c.id = :id"
-	)
-	public EnvioMasivoCorreo findById(@Param("id") int id);
+	//================================================================>>>>>
 	
-
 	@Query("select c from EnvioMasivoCorreo c where c.estado = :estado")  
 	public List<EnvioMasivoCorreo> findAllByEstado(@Param("estado") String estado);
 

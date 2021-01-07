@@ -69,7 +69,7 @@ public class EnvioMasivoCorreoController
 
 
 	@PostMapping(value = "/{enviarPorEmail}") 
-	public ResponseEntity guardar
+	public ResponseEntity<String> guardar
 	(
 		@RequestBody EnvioMasivoCorreo envioMasivoCorreo, 
 		@PathVariable("enviarPorEmail") Boolean enviarPorEmail, 
@@ -84,7 +84,7 @@ public class EnvioMasivoCorreoController
 			if (enviarPorEmail) {  				// Si se desea enviar por email	
 				servicio.enviarCorreos(idGuardado);
 			}
-			return new ResponseEntity(HttpStatus.OK);
+			return new ResponseEntity<String>(HttpStatus.OK);
 		} 
 		catch(IllegalArgumentException ex) { 
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage()); 
@@ -96,10 +96,10 @@ public class EnvioMasivoCorreoController
 
 
 	@GetMapping(path = {"/{id}"})  // url:    /EnvioMasivoCorreo/1  
-	public Object editar(@PathVariable("id") int id) 
+	public ResponseEntity<Object> editar(@PathVariable("id") int id) 
 	{ 
 		try { 
-			return servicio.buscarPorId(id);  
+			return ResponseEntity.ok(servicio.buscarPorId(id));  
 		} 
 		catch (Exception ex) { 
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage()); 
@@ -108,7 +108,7 @@ public class EnvioMasivoCorreoController
 	
 
 	@PutMapping(value = "/{enviarPorEmail}")  
-	public ResponseEntity editar
+	public ResponseEntity<String> editar
 	(
 		@RequestBody EnvioMasivoCorreo envioMasivoCorreo, 
 		@PathVariable("enviarPorEmail") Boolean enviarPorEmail,
@@ -123,7 +123,7 @@ public class EnvioMasivoCorreoController
 				servicio.enviarCorreos(envioMasivoCorreo.getId());
 			}
 			
-			return new ResponseEntity(HttpStatus.OK);
+			return new ResponseEntity<String>(HttpStatus.OK);
 		} 
 		catch(IllegalArgumentException ex) { 
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage()); 
@@ -135,11 +135,11 @@ public class EnvioMasivoCorreoController
 
 
 	@DeleteMapping(path = "/{id}") 
-	public Object borrar(@PathVariable("id") int id) 
+	public ResponseEntity<String> borrar(@PathVariable("id") int id) 
 	{ 
 		try { 
 			servicio.borrar(id); 
-			return new ResponseEntity(HttpStatus.OK); 
+			return new ResponseEntity<String>(HttpStatus.OK); 
 		} 
 		catch(Exception ex) 
 		{ 

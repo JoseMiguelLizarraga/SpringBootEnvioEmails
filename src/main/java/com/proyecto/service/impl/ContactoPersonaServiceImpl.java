@@ -52,7 +52,7 @@ public class ContactoPersonaServiceImpl implements IContactoPersonaService
 	public ContactoPersona buscarPorId(int id) 
 	{ 
 		try { 
-			return repositorio.findById(id);
+			return repositorio.findById(id).orElse(null);
 		} 
 		catch(Exception ex) { 
 			throw new RuntimeException("Error al buscar ContactoPersona con el id: " + id + "." + ex.getMessage()); 
